@@ -21,7 +21,7 @@ public class FrameDistVector {
 		}
 		stars.add(sp);
 	}
-	public void sort ( )
+	public void sort( )
 	{
 		Collections.sort(dists);
 	}

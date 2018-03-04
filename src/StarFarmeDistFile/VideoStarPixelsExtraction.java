@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -14,6 +15,8 @@ import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfKeyPoint;
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
@@ -70,16 +73,25 @@ public class VideoStarPixelsExtraction {
                 Mat centroids= new Mat(frame.size(), CvType.CV_8UC1);
                 Imgproc.connectedComponentsWithStats(outerBox, labels, edges, centroids);
                 Imgproc.Canny(outerBox, edges, 200, 250);
-                Point[] center = new Point[centroids.rows()-1];
-                //Imgproc.findContours( thr, contours, new Mat(),Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE, new Point(0,0) );
-                frame.copyTo(outerBox, edges);
-                //for (int i = 0; i < center.length; i++) {
-				//	Imgproc.circle(outerBox, center[i], 5,new Scalar(100));
-				//} 
-                // Free memory
-                for (int i = 0; i < edges; i++) {
-					
-				}
+                //Point[] center = new Point[centroids.rows()-1];
+                List<MatOfPoint> contours = new ArrayList<>();
+                Imgproc.findContours( edges, contours, new Mat(),Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE, new Point(0,0) );
+                for (int i = 0; i < contours.size(); i++) {
+                	MatOfPoint2f contour =new MatOfPoint2f(contours.get(i).toArray());
+            		double contourArea = Imgproc.contourArea(contour);
+            		if (contourArea > videoFile.minArea) {
+            			float[] radius = new float[1];
+    					Point center = new Point();
+    					Imgproc.minEnclosingCircle(contour, center, radius);   
+         			   //frame.copyTo(outerBox, center);
+    					System.out.println("center:" +center.toString()+ "radius"+radius[0]);
+    					Imgproc.circle(outerBox, center,(int)radius[0], new Scalar(150), 10);
+
+            		}	
+            		}
+                
+                //Imgproc.findContours(img,contours,new Mat(),Imgproc.RETR_TREE,Imgproc.CHAIN_APPROX_SIMPLE);
+
                 centroids.release();
                 edges.release();
             }
