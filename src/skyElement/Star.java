@@ -3,15 +3,19 @@ package skyElement;
 public class Star {
 
 	
-	double ra , dec,mag, name;
+	double ra , dec,mag;
+	int id;
+	String name;
 	
-	public Star(double ra, double dec, double mag, double name) {
+	public Star(double ra, double dec, double mag, int id,String name) {
 		super();
 		this.ra = ra;
 		this.dec = dec;
 		this.mag = mag;
-		this.name = name;
+		this.id = id;
+		this.name=name;
 	}
+
 
 	public Star() {
 		// TODO Auto-generated constructor stub
@@ -21,32 +25,34 @@ public class Star {
 		return ra;
 	}
 
-	public void setRa(double ra) {
-		this.ra = ra;
-	}
+
 
 	public double getDec() {
 		return dec;
 	}
 
-	public void setDec(double dec) {
-		this.dec = dec;
-	}
+
 
 	public double getMag() {
 		return mag;
 	}
 
-	public void setMag(double mag) {
-		this.mag = mag;
+
+
+	public String getName() {
+		return String.valueOf(this.id);
 	}
 
-	public double getName() {
-		return name;
+	public String getStringName() {
+		return this.name;
 	}
 
-	public void setName(double name) {
-		this.name = name;
+
+	@Override
+	public String toString() {
+		return "Star [ra=" + ra + ", dec=" + dec + ", mag=" + mag + ", id=" + id + ", name=" + name + "]";
 	}
+
+	
 
 }

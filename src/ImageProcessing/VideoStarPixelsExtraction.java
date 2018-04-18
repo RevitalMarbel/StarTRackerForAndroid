@@ -1,10 +1,11 @@
-package StarFarmeDistFile;
+package ImageProcessing;
 import java.awt.Color;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -26,20 +27,26 @@ import org.opencv.highgui.*;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoCapture;
 import StaticElements.*;
+import skyElement.StarPixel;
 
 public class VideoStarPixelsExtraction {
 	
 	static int rezX=1280;
 	static int rezy=720;
-	static int rezyn=720-50;
+	//static int rezyn=720-50;
 	//static int diagX
 	static {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
- 
     static Mat imag = null;
- 
-    public static void main(String[] args) {
+    
+    
+   public static void main(String[] args) {
+    	startProcces();
+    	Output.writeCSVFiles();   
+   }
+   
+    public static void startProcces(){   	
         JFrame jframe = new JFrame("Star Detector");
         jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JLabel vidpanel = new JLabel();
@@ -52,8 +59,9 @@ public class VideoStarPixelsExtraction {
         VideoCapture camera = new VideoCapture(
                videoFile.StarVideoName);
         Size sz = new Size(rezX, rezy);
+        //create output vectors (dist and pixels files)  
+        Output op= new Output();
 
-        
         while (true) {
             if (camera.read(frame)) {
                 Imgproc.resize(frame, frame, sz);
@@ -76,34 +84,53 @@ public class VideoStarPixelsExtraction {
                 //Point[] center = new Point[centroids.rows()-1];
                 List<MatOfPoint> contours = new ArrayList<>();
                 Imgproc.findContours( edges, contours, new Mat(),Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE, new Point(0,0) );
+                FrameDistVector fdv= new FrameDistVector();
+                MatOfPoint2f f_contour =new MatOfPoint2f(contours.get(contours.size()-1).toArray());
+                Point f_center = new Point();
+                float[] f_radius = new float[1];
+                Imgproc.minEnclosingCircle(f_contour, f_center, f_radius);  
                 for (int i = 0; i < contours.size(); i++) {
                 	MatOfPoint2f contour =new MatOfPoint2f(contours.get(i).toArray());
             		double contourArea = Imgproc.contourArea(contour);
             		if (contourArea > videoFile.minArea) {
             			float[] radius = new float[1];
     					Point center = new Point();
+    					if(i==0)
+    						f_center=center;
     					Imgproc.minEnclosingCircle(contour, center, radius);   
          			   //frame.copyTo(outerBox, center);
     					System.out.println("center:" +center.toString()+ "radius"+radius[0]);
     					Imgproc.circle(outerBox, center,(int)radius[0], new Scalar(150), 10);
-
+    					//Imgproc.putText(outerBox, center.toString(), center, Core.FONT_ITALIC, 1.0 ,new  Scalar(100));
+    					
+    					StarPixel tempSP=new StarPixel(center,radius[0]);
+    					fdv.addStarPixel(tempSP);
+    					if(tempSP.distTo(f_center) >100){
+    					Imgproc.line(outerBox, center, f_center, new Scalar(150));
+    					Point mid = new Point ((center.x+f_center.x)/2,(center.y+f_center.y)/2);
+    					Imgproc.putText(outerBox, String.valueOf(tempSP.distTo(f_center)), mid, Core.FONT_ITALIC, 1.0 ,new  Scalar(200));
+    					}
+						
             		}	
             		}
+                	fdv.sort();
+                	op.add(fdv.getDists(), fdv.getStars());
                 
                 //Imgproc.findContours(img,contours,new Mat(),Imgproc.RETR_TREE,Imgproc.CHAIN_APPROX_SIMPLE);
-
                 centroids.release();
                 edges.release();
-            }
-                
                 ImageIcon image = new ImageIcon(Mat2bufferedImage(outerBox));
-        
                 vidpanel.setIcon(image);
-                vidpanel.repaint();
-               
+                vidpanel.repaint(); 
             }
+            else 
+            	break;
+             
+        } 
         
-    }
+       
+        }
+
     public static BufferedImage Mat2bufferedImage(Mat in)
     {
         BufferedImage out;

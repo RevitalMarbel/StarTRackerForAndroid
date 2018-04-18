@@ -1,4 +1,4 @@
-package StarFarmeDistFile;
+package ImageProcessing;
 
 import java.util.Collections;
 import java.util.Vector;
@@ -15,12 +15,19 @@ public class FrameDistVector {
 	
 	public void addStarPixel(StarPixel sp  )
 	{
-		
 		for (int i = 0; i < stars.size(); i++) {
 			dists.add(sp.distTo(stars.elementAt(i)));
 		}
 		stars.add(sp);
 	}
+	public Vector<Double> getDists() {
+		return dists;
+	}
+
+	public Vector<StarPixel> getStars() {
+		return stars;
+	}
+
 	public void sort( )
 	{
 		Collections.sort(dists);

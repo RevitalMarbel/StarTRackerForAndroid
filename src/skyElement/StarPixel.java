@@ -1,5 +1,7 @@
 package skyElement ;
 
+import org.opencv.core.Point;
+
 public class StarPixel {
 
 	
@@ -12,9 +14,21 @@ public class StarPixel {
 		this.y = y;
 		this.radius = radius;
 	}
+	public StarPixel(Point p, double radius) {
+		super();
+		this.x = p.x;
+		this.y = p.y;
+		this.radius = radius;
+	}
 	
 	
 	public double distTo(StarPixel sp)
+	{
+		double temp= (this.x-sp.x)*(this.x-sp.x)+(this.y-sp.y)*(this.y-sp.y);
+		return Math.sqrt(temp);		
+	}
+	
+	public double distTo(Point sp)
 	{
 		double temp= (this.x-sp.x)*(this.x-sp.x)+(this.y-sp.y)*(this.y-sp.y);
 		return Math.sqrt(temp);		
