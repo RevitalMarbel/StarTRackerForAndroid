@@ -11,9 +11,21 @@ public class LoadHashTableTest {
 
 	public static void main(String[] args) {
 				
-		LoadHashTable.loadStatus();
+		LoadHashTable.loadTripletHashMap();
+		LoadHashTable.loadPairsHashMap();
+		LoadHashTable.loadIDHashMap();
 		System.out.println(LoadHashTable.getRs().size());
-		System.out.println(LoadHashTable.getRs().get("197_268_330"));
+		System.out.println(LoadHashTable.getRs().get("8_13_20"));
+		System.out.println(LoadHashTable.getRs().get("2_4_7"));
+		//System.out.println(LoadHashTable.getRs().get("8_10_11"));
+		System.out.println(LoadHashTable.getRs_id().get(4));
+		System.out.println(LoadHashTable.getRs_id().get(5));
+		System.out.println(LoadHashTable.getRs_id().get(7));
+		System.out.println(LoadHashTable.getRs_pairs().get(7));
+		System.out.println(LoadHashTable.getRs_pairs().get(11));
+		System.out.println(LoadHashTable.getRs_pairs().get(10));
+		System.out.println(LoadHashTable.getRs_pairs().get(5));
+		
 	
 
 	//	System.out.println(LoadHashTable.getRs().get("688_763_854"));

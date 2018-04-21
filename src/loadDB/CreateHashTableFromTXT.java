@@ -40,7 +40,7 @@ public class CreateHashTableFromTXT {
 	 **/ 	
 	private static File  startsDB  ;
 	private static Scanner in;
-	private static int Counter =0;
+	private static int Counter =1;
 	static double duplicateCounter=0;
 	static double trig_counter=0;
 	static double errCount=0;
@@ -48,12 +48,18 @@ public class CreateHashTableFromTXT {
 	static String csvFile= HashTableFile.hashFileName ;
     static BufferedReader br = null;
     
-	private static Vector<Star> starVector=new Vector(); 
+	private static HashMap<Integer,Star> starVector=new HashMap<Integer,Star>(); 
 	//private static HashMap<String, String> hmap = new HashMap <String, String>();
 	private static HashMap<String,ArrayList<String>> STARTRACK_TABLE = new HashMap<String,ArrayList<String>>();
+	private static HashMap<Integer,ArrayList<String>> STARTRACK_TABLE_pairs = new HashMap<Integer,ArrayList<String>>();
+
 	static HashMap<Integer,Star> STARS_TABLE = new HashMap<Integer,Star>();
+	//getters////////
 	
 	
+	public static HashMap<Integer, ArrayList<String>> getSTARTRACK_TABLE_pairs() {
+		return STARTRACK_TABLE_pairs;
+	}
 	public static HashMap<String, ArrayList<String>> getSTARTRACK_TABLE() {
 		return STARTRACK_TABLE;
 	}
@@ -69,7 +75,7 @@ public class CreateHashTableFromTXT {
             br = new BufferedReader(new FileReader(csvFile));
             while ((line = br.readLine()) != null) {
             	
-            	if(Counter!=0)
+            	if(Counter!=1)
             	{
             		
     			int ID= Counter;
@@ -83,7 +89,7 @@ public class CreateHashTableFromTXT {
     			String name= starLine[2];
     			Star tempStar= new Star(RA,DE, MAG ,ID, name); 
     			STARS_TABLE.put(Counter,tempStar);
-    			starVector.add(tempStar);
+    			starVector.put(ID,tempStar);
             	if(Counter ==1)
             		System.out.println(starVector.get(0).toString());
             	}
@@ -111,32 +117,74 @@ public class CreateHashTableFromTXT {
 	 * value-  Staring of s names separated by ;
 	 * than save the hash map to a file .  
 	 */
+	
+	private static void generatePairTable(){
+		int counter=0;
+		for (int i=2;i<starVector.size();i++)
+		{
+			for( int j=i+1;j<starVector.size();j++)
+			{
+				if((starVector.get(i).getDec()>=0 && starVector.get(j).getDec()>=0)
+						||(starVector.get(i).getDec()<0 && starVector.get(j).getDec()<0 ))
+						{
+							//if angular distance is larger than threshold skip
+							if(AccuracyLevel.angDist(starVector.get(i), starVector.get(j)) < HashTableFile.maxAngdist)
+								{
+								
+						counter++;
+						Double key2D= AccuracyLevel.angDist(starVector.get(i),starVector.get(j));
+						int intkey2D=Integer.valueOf(AccuracyLevel.RoundToRange(key2D));
+						String value2D= starVector.get(i).getName().concat("_").concat(starVector.get(j).getName());
+						put2DKey(intkey2D, value2D);
+						System.out.println("key 2D : "+intkey2D +" val2D: "+value2D);
+								}
+						}
+			}
+		}
+				
+	}
 	private static void generateTable()
 	{
-		for (int i=0;i<starVector.size();i++)
+		int counter=0;
+		for (int i=2;i<starVector.size();i++)
 		{
 			for( int j=i+1;j<starVector.size();j++)
 			{// check if the stars are close enough to be at the same frame(distance less than 30 deg)
 				for(int t=j+1;t<starVector.size();t++)
 				{  
-					if((starVector.elementAt(i).getDec()>=0 && starVector.elementAt(j).getDec()>=0 &&starVector.elementAt(t).getDec()>=0)
-						||(starVector.elementAt(i).getDec()<0 && starVector.elementAt(j).getDec()<0 &&starVector.elementAt(t).getDec()<0)){
-//	
+					if((starVector.get(i).getDec()>=0 && starVector.get(j).getDec()>=0 &&starVector.get(t).getDec()>=0)
+						||(starVector.get(i).getDec()<0 && starVector.get(j).getDec()<0 &&starVector.get(t).getDec()<0)){
+						{
+							//if angular distance is larger than threshold skip
+							if(AccuracyLevel.angDist(starVector.get(i), starVector.get(j)) < HashTableFile.maxAngdist
+								&&  AccuracyLevel.angDist(starVector.get(i), starVector.get(t)) < HashTableFile.maxAngdist
+								&& AccuracyLevel.angDist(starVector.get(j), starVector.get(t)) < HashTableFile.maxAngdist	)
+							{
+								
+						counter++;	
 					String tempVal;
-					String[] keyVal=AccuracyLevel.createTkeyValForMAp(starVector.elementAt(i),starVector.elementAt(j),starVector.elementAt(t));
-				// 	System.out.println(keyVal[0]+" "+keyVal[1]);
+					//create key for triplet hash map
+					String[] keyVal=AccuracyLevel.createTkeyValForMAp(starVector.get(i),starVector.get(j),starVector.get(t));
+					//create key  for pairs hash map
+					
+					
+					// 	System.out.println(keyVal[0]+" "+keyVal[1]);
 					tempVal=keyVal[1];
 					String key=keyVal[0];
 					//String errkey=AccuracyLevelErr.createTkeyForMap(starVector.elementAt(i),starVector.elementAt(j),starVector.elementAt(t));
-					putKey(key, tempVal);//put key and value .in map
-					if(i==0 && j==1 && t==2)
+					putDuplicteKey(key, tempVal);
+					//putKey(key, tempVal);//put key and value .in map
+					if(counter==2 || counter ==10 || counter ==20){
 						System.out.println("key: "+key +" val: "+tempVal);
-					trig_counter++;
+						
+						
+					}
+						trig_counter++;
 					}}
-				}
+				}}
 			}
+		}
 		
-		saveStatus();
 		
 	}	  
 
@@ -147,7 +195,10 @@ public class CreateHashTableFromTXT {
 		scanFileToObj();
 		//vector to map
 		System.out.println("generating table to - "+ HashTableFile.hashFileOutName);
+		
+		generatePairTable();
 		generateTable();
+		saveStatus();
 		System.out.println("size of table: "+trig_counter+"size of vector "+(trig_counter-duplicateCounter) );
 		System.out.println("load factor: "+trig_counter/(trig_counter-duplicateCounter) );
 		double res =errCount/trig_counter;
@@ -174,14 +225,47 @@ public class CreateHashTableFromTXT {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		
+		//save pair hash map to File
+		try{
+
+			//The name of the output file.
+			FileOutputStream saveFile = new FileOutputStream(HashTableFile.hashFileOutName+"_pairs");
+			ObjectOutputStream out = new ObjectOutputStream(saveFile);
+			out.writeObject(getSTARTRACK_TABLE_pairs());
+			out.close();
+			//  fileOut.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	// save star id hashmap
+		try{
+
+			//The name of the output file.
+			FileOutputStream saveFile = new FileOutputStream(HashTableFile.hashFileOutName+"_id");
+			ObjectOutputStream out = new ObjectOutputStream(saveFile);
+			out.writeObject(getStarVector());
+			out.close();
+			//  fileOut.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
+	public static HashMap<Integer, Star> getStarVector() {
+		return starVector;
+	}
+	public static void setStarVector(HashMap<Integer, Star> starVector) {
+		CreateHashTableFromTXT.starVector = starVector;
+	}
 	public static String[] duplicateKey(String key)
 	{
 		String[] keys=key.split("_");
-		double key1= Double.valueOf(keys[0]);
-		double key2= Double.valueOf(keys[1]);
-		double key3= Double.valueOf(keys[2]);
+		int key1= Integer.valueOf(keys[0]);
+		int key2= Integer.valueOf(keys[1]);
+		int key3= Integer.valueOf(keys[2]);
 		String k1=String.valueOf(key1-1).concat("_").concat(String.valueOf(key2-1).concat("_").concat(String.valueOf(key3-1)));
 		String k2=String.valueOf(key1-1).concat("_").concat(String.valueOf(key2).concat("_").concat(String.valueOf(key3)));
 		String k3=String.valueOf(key1-1).concat("_").concat(String.valueOf(key2).concat("_").concat(String.valueOf(key3-1)));
@@ -207,6 +291,8 @@ public class CreateHashTableFromTXT {
 		
 
 		String[] res= {k1,k2,k3,k4,k5,k6,k7,k8,k9,k10,k11,k12,k13,k14,k15,k16,k17,k18,k19,k20};
+		
+		System.out.println(k1+ " "+k3+" "+k12);
 		return res;
 		
 	}
@@ -228,6 +314,18 @@ public static void putKey(String key, String tempVal){
 		duplicateCounter ++;
 	value.add(tempVal);
 	STARTRACK_TABLE.put(key, value);
+	//System.out.println( value);
+}
+public static void put2DKey(int key, String tempVal){	
+	ArrayList<String> value= STARTRACK_TABLE_pairs.get(key);
+	if(null== value )
+	{
+		value =new ArrayList<String>();
+	}
+	else
+		duplicateCounter ++;
+	value.add(tempVal);
+	STARTRACK_TABLE_pairs.put(key, value);
 	//System.out.println( value);
 }
 }

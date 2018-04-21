@@ -6,6 +6,7 @@ import java.util.Random;
 import javax.swing.plaf.basic.BasicScrollPaneUI.HSBChangeListener;
 
 import skyElement.Star;
+import skyElement.StarPixel;
 import StaticElements.*;
 
 //this class will have static methods for calculating hash map key
@@ -124,7 +125,7 @@ public class AccuracyLevel {
 		return  keyVal;
 	}
 	
-	public static String[] createTkeyVal(Star s1, Star s2, Star s3)
+	public static String[] createTkeyVal(StarPixel s1, StarPixel s2, StarPixel s3)
 	{
 		String[] keyVal=new String[2]; 
 		double dist[] =new double[3];
@@ -135,72 +136,79 @@ public class AccuracyLevel {
 		String key1="",key2="",key3="",val1="",val2="",val3="";
 		if(dist[0]<dist[1] && dist[1]<dist[2])
 		{
-		key1= RoundToRange(dist[0]);
-		key2= RoundToRange(dist[1]);
-		key3= RoundToRange(dist[2]);
-		 val1=s3.getName();
-		 val2=s1.getName();
-		 val3=s2.getName();
+		key1= FrameRoundToRange(dist[0]);
+		key2= FrameRoundToRange(dist[1]);
+		key3= FrameRoundToRange(dist[2]);
+		val1=String.valueOf( s3.getName());
+		val2=String.valueOf( s1.getName());
+		val3=String.valueOf( s2.getName());
+		
 		}
 		if(dist[1]<dist[0] && dist[0]<dist[2])
 		{//System.out.println(dist[0]+", "+dist[1]+" ,"+dist[2]);
 //			 key1= RoundToRange(dist[1]*StaticElements.scaling);
 //			 key2= RoundToRange(dist[0]*StaticElements.scaling);
 //			 key3= RoundToRange(dist[2]*StaticElements.scaling);
-			 key1= RoundToRange(dist[1]);
-			 key2= RoundToRange(dist[0]);
-			 key3= RoundToRange(dist[2]);
-			 val1=s1.getName();
-			 val2=s3.getName();
-			 val3=s2.getName();
+			 key1= FrameRoundToRange(dist[1]);
+			 key2= FrameRoundToRange(dist[0]);
+			 key3= FrameRoundToRange(dist[2]);
+			 val1=String.valueOf( s1.getName());
+			val2=String.valueOf( s3.getName());
+			val3=String.valueOf( s2.getName());
+				
+	
 			}
 		if(dist[2]<dist[1] && dist[1]<dist[0])
 		{//System.out.println(dist[0]+", "+dist[1]+" ,"+dist[2]);
 //			 key1= RoundToRange(dist[2]*StaticElements.scaling);
 //			 key2= RoundToRange(dist[1]*StaticElements.scaling);
 //			 key3= RoundToRange(dist[0]*StaticElements.scaling);
-			 key1= RoundToRange(dist[2]);
-			 key2= RoundToRange(dist[1]);
-			 key3= RoundToRange(dist[0]);
-			 val1=s2.getName();
-			 val2=s1.getName();
-			 val3=s3.getName();
+			 key1= FrameRoundToRange(dist[2]);
+			 key2= FrameRoundToRange(dist[1]);
+			 key3= FrameRoundToRange(dist[0]);
+			 val1=String.valueOf( s2.getName());
+			val2=String.valueOf( s1.getName());
+			val3=String.valueOf( s3.getName());
+		
 			}
 		if(dist[2]<dist[0] && dist[0]<dist[1])
 		{//System.out.println(dist[0]+", "+dist[1]+" ,"+dist[2]);
 //			 key1= RoundToRange(dist[2]*StaticElements.scaling);
 //			 key2= RoundToRange(dist[0]*StaticElements.scaling);
 //			 key3= RoundToRange(dist[1]*StaticElements.scaling);
-			 key1= RoundToRange(dist[2]);
-			 key2= RoundToRange(dist[0]);
-			 key3= RoundToRange(dist[1]);
-			 val1=s2.getName();
-			 val2=s3.getName();
-			 val3=s1.getName();
+			 key1= FrameRoundToRange(dist[2]);
+			 key2= FrameRoundToRange(dist[0]);
+			 key3= FrameRoundToRange(dist[1]);
+			 val1=String.valueOf( s2.getName());
+				val2=String.valueOf( s3.getName());
+				val3=String.valueOf( s1.getName());
+			
 			}
 		if(dist[1]<dist[2] && dist[2]<dist[0])
 		{//System.out.println(dist[0]+", "+dist[1]+" ,"+dist[2]);
 //			 key1= RoundToRange(dist[1]*StaticElements.scaling);
 //			 key2= RoundToRange(dist[2]*StaticElements.scaling);
 //			 key3= RoundToRange(dist[0]*StaticElements.scaling);
-			 key1= RoundToRange(dist[1]);
-			 key2= RoundToRange(dist[2]);
-			 key3= RoundToRange(dist[0]);
-			 val1=s1.getName();
-			 val2=s2.getName();
-			 val3=s3.getName();
+			 key1= FrameRoundToRange(dist[1]);
+			 key2= FrameRoundToRange(dist[2]);
+			 key3= FrameRoundToRange(dist[0]);
+			 val1=String.valueOf( s1.getName());
+				val2=String.valueOf( s2.getName());
+				val3=String.valueOf( s3.getName());
+
 			}
 		if(dist[0]<dist[2] && dist[2]<dist[1])
 		{//System.out.println(dist[0]+", "+dist[1]+" ,"+dist[2]);
 //			 key1= RoundToRange(dist[0]*StaticElements.scaling);
 //			 key2= RoundToRange(dist[2]*StaticElements.scaling);
 //			 key3= RoundToRange(dist[1]*StaticElements.scaling);
-			 key1= RoundToRange(dist[0]);
-			 key2= RoundToRange(dist[2]);
-			 key3= RoundToRange(dist[1]);
-			 val1=s3.getName();
-			 val2=s2.getName();
-			 val3=s1.getName();
+			 key1= FrameRoundToRange(dist[0]);
+			 key2= FrameRoundToRange(dist[2]);
+			 key3= FrameRoundToRange(dist[1]);
+			 val1=String.valueOf( s3.getName());
+				val2=String.valueOf( s2.getName());
+				val3=String.valueOf( s1.getName());
+		
 			}
 		keyVal[0]=key1.concat("_").concat(key2).concat("_").concat(key3);
 		keyVal[1]=val2.concat("_").concat(val3).concat("_").concat(val1);
@@ -212,6 +220,12 @@ public class AccuracyLevel {
 		double Al=HashTableFile.Al;
 		double angToPixratio=HashTableFile.angPixrRatio;
 		String key= String.valueOf(Math.round(value*angToPixratio*Al));
+		return key;
+	}
+	public static String FrameRoundToRange(double value )
+	{
+		double Al=HashTableFile.Al;
+		String key= String.valueOf(Math.round(value*Al));
 		return key;
 	}
 	//compute rounded distance with error probabilty of err(gaussian) 
@@ -241,10 +255,16 @@ public class AccuracyLevel {
 		double d2= (s1.getDec()-s2.getDec());
 		return Math.sqrt( d1*d1 +d2*d2);
 	}
-	public static double intRoundToRange(double value )
+	public static double dist(StarPixel s1, StarPixel s2)
+	{
+		double d1= (s1.getX()-s2.getX() );
+		double d2= (s1.getY()-s2.getY());
+		return Math.sqrt( d1*d1 +d2*d2);
+	}
+	public static int intRoundToRange(double value )
 	{
 		//double keyRange=StaticElements.keyRange;
-		double key=  (int)Math.round(value*100)/100 ;///100;
+		int key=  (int)Math.round(value*100)/100 ;///100;
 		return key;
 	}
 	public static double angDist(Star s1, Star s2)

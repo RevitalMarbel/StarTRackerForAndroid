@@ -1,8 +1,15 @@
 package skyElement;
 
-public class Star {
+import java.io.Serializable;
+
+public class Star implements Serializable{
 
 	
+	public int getId() {
+		return id;
+	}
+
+
 	double ra , dec,mag;
 	int id;
 	String name;

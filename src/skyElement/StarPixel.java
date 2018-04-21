@@ -6,14 +6,19 @@ public class StarPixel {
 
 	
 	double x, y , radius;
+	int name;
 	
-	
-	public StarPixel(double x, double y, double radius) {
+	public StarPixel(double x, double y, double radius, int name) {
 		super();
 		this.x = x;
 		this.y = y;
 		this.radius = radius;
+		this.name=name;
 	}
+	public int getName() {
+		return name;
+	}
+	
 	public StarPixel(Point p, double radius) {
 		super();
 		this.x = p.x;
@@ -35,6 +40,10 @@ public class StarPixel {
 	}
 	
 	
+	@Override
+	public String toString() {
+		return "StarPixel [x=" + x + ", y=" + y + ", radius=" + radius + "]";
+	}
 	public double getX() {
 		return x;
 	}
