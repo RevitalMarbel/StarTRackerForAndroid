@@ -43,13 +43,16 @@ public class pixelMatch {
 		for (int i = 0; i < matches.size(); i++) 
 		{
 			if(matches.elementAt(i).getRa()==m.getRa() && matches.elementAt(i).getDec()==m.getDec())
-				appear.set(i,appear.elementAt(i)+1);
-				exist=true;
+			{	appear.set(i,appear.elementAt(i)+1);
+				exist=true;}
 		}
 		if(!exist){
+		//System.out.println("add new" +m.getStringName() +"to "+this.s);
 		matches.add(m);
 		appear.add(1);
 		}
+	//	System.out.println("add" +m.getStringName() +"to "+this.s);
+
 		int bestCount=0;
 		int bestInd=0;
 		//get new best match

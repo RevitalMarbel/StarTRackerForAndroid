@@ -32,7 +32,7 @@ public class IdentifyStarsInImageFile2 {
 	//private static Vector<Star> starVectorDB=new Vector<Star>(); 
 	private static Vector<StarTriplet2> matchVector=new Vector<StarTriplet2>();
 	private static pixelMatchArr bestMatchPix;
-	private static String csvFile= StarFrame.starFrameName;
+	private static String csvFile= StarFrame.starFrameNamecsv;
 	private static BufferedReader br;
 	static HashMap<Integer, Star> starVectorDB;
 	
@@ -94,7 +94,7 @@ public class IdentifyStarsInImageFile2 {
 		//	StarTriplet2.setPixelMatchSize(starVector.size());
 				
 			//	two first objects in this vector are garbage 
-			for (int i =2; i<starVectorFrame.size(); i++){
+			for (int i =0; i<starVectorFrame.size(); i++){
 						for (int j=i+1; j<starVectorFrame.size(); j++) {
 						for(int t=j+1;t<starVectorFrame.size();t++)
 					{  
@@ -170,9 +170,9 @@ public class IdentifyStarsInImageFile2 {
 			System.out.println(fourmatch.elementAt(i).s_dbp1.get(0).getDec()+ " "+matchVector.elementAt(i).s_dbp2.get(0).getDec()+" "+matchVector.elementAt(i).s_dbp3.get(0).getDec()+" "+i);
 		}
 		System.out.println("stars:"+ Counter+ "all triplets: " + matchVector.size()+" kytes: "+ fourmatch.size());
-		//CreateTriangImage.createImage2(starVector, fourmatch, StaticElements.imageTestFileName+"_"+StaticElements.keyRange+""+StaticElements.istrackMode+"__F.jpg",20,starVector.size());
-		CreateTriangImage.createImage2(starVectorDB, matchVector, StarFrame.outPutImage,20,starVectorDB.size());
-		//CreateTriangImage.createImage3(starVectorDB,pixelMatchArr.bestMatchPix , StarFrame.outPutImage,20,starVectorFrame.size(), 20, 30);
+		//CreateTriangImage.createImage2(starVectorDB, fourmatch, StarFrame.outPutImage,20,starVectorDB.size());
+		//CreateTriangImage.createImage2(starVectorDB, matchVector, StarFrame.outPutImage,20,starVectorDB.size());
+		CreateTriangImage.createImage3(starVectorDB,pixelMatchArr.bestMatchPix , StarFrame.outPutImage+"3",20,starVectorFrame.size(), 20, 30);
 		//CreateImageFromTxt.createImageDB(starVectorDB, matchVector, StarTriplet2.getBestMatchPix(),9000, 9000,  StaticElements.imageTestFileName+"_"+StaticElements.keyRange+"_"+StaticElements.istrackMode+"_D_"+".jpg");
 	}
 	public static double[] triagleCenter(double x1,double y1,double x2,double y2,double x3,double y3)

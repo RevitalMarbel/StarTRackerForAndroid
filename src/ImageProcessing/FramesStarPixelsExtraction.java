@@ -71,7 +71,7 @@ public class FramesStarPixelsExtraction {
  
         Mat frame = new Mat();
         Mat outerBox = new Mat();
-        frame = Imgcodecs.imread(videoFile.StarFrameFile);
+        frame = Imgcodecs.imread(StarFrame.starFrameName);
         
         
         Size sz = new Size(rezX, rezy);
@@ -136,7 +136,7 @@ public class FramesStarPixelsExtraction {
                 BufferedImage imageb = Mat2bufferedImage(outerBox);
                 ImageIcon imageI = new ImageIcon(Mat2bufferedImage(outerBox));
                 
-                File outputfile = new File(videoFile.StarFrameFile+"_rez.png");
+                File outputfile = new File(StarFrame.outPutImage+"_rez.png");
                 try {
 					ImageIO.write(imageb, "png", outputfile);
 				} catch (IOException e) {

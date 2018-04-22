@@ -158,8 +158,12 @@ public class CreateHashTableFromTXT {
 							//if angular distance is larger than threshold skip
 							if(AccuracyLevel.angDist(starVector.get(i), starVector.get(j)) < HashTableFile.maxAngdist
 								&&  AccuracyLevel.angDist(starVector.get(i), starVector.get(t)) < HashTableFile.maxAngdist
-								&& AccuracyLevel.angDist(starVector.get(j), starVector.get(t)) < HashTableFile.maxAngdist	)
-							{
+								&& AccuracyLevel.angDist(starVector.get(j), starVector.get(t)) < HashTableFile.maxAngdist	
+							
+								&& AccuracyLevel.angDist(starVector.get(i), starVector.get(j)) > HashTableFile.minAngdist
+										&&  AccuracyLevel.angDist(starVector.get(i), starVector.get(t)) > HashTableFile.minAngdist
+										&& AccuracyLevel.angDist(starVector.get(j), starVector.get(t)) > HashTableFile.minAngdist	)
+									{
 								
 						counter++;	
 					String tempVal;

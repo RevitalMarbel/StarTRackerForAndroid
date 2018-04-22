@@ -43,10 +43,10 @@ public class Output {
 		try {
 			// use FileWriter constructor that specifies open for appending
 			 fileWriter = new FileWriter(videoFile.StarCoordFile);
-			 fileWriter.append("X,Y,Radius \n" );
+			 //fileWriter.append("X,Y,Radius \n" );
 			 for (int i = 0; i < starPixels.size(); i++) {
 				 fileWriter.append(NEW_LINE_SEPARATOR);
-				 fileWriter.append("Frame"+i );
+				 //fileWriter.append("Frame"+i );
 				 for (int j = 0; j < starPixels.get(i).size(); j++) {
 					 fileWriter.append(NEW_LINE_SEPARATOR);
 					 fileWriter.append(String.valueOf(starPixels.get(i).get(j).getX()));

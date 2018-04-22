@@ -27,6 +27,7 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoCapture;
 
+import StaticElements.StarFrame;
 import StaticElements.videoFile;
  
 public class MainFrame {
@@ -50,7 +51,7 @@ public class MainFrame {
 
         ArrayList<Rect> array = new ArrayList<Rect>();
      
-                Mat frame = Imgcodecs.imread(videoFile.StarFrameFile);
+                Mat frame = Imgcodecs.imread(StarFrame.starFrameName);
                 System.out.println(frame.size());
                 Size sz = new Size(frame.width(), frame.height());    
        

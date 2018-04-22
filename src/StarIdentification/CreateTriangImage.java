@@ -35,27 +35,30 @@ public class CreateTriangImage {
 	    	f= new Font (Font.DIALOG,Font.BOLD,150);
 	    	}
 	    	else{
-	    	f= new Font (Font.DIALOG,Font.BOLD,ovalSize+50);}
-			g2.setFont(f);
-	    	for(int i=0; i<sv.size();i++)
-	    	{
-	    		if(i>sv_realsize)
-	    			g2.setColor(Color.YELLOW);
-	    		else
-	    			g2.setColor(Color.YELLOW);
-	    		if(ovalSize<3){
-	    			int x=(int)sv.get(i).getRa();int y= 90+(int)sv.get(i).getDec();
-	    		g2.drawOval(x,y, ovalSize, ovalSize);
-	    		g2.drawString(x+", "+y, x, y+70);
-	    		}
-	    		else{
-	    			if(sv.get(i)!= null){
-	    			int x=(int)sv.get(i).getRa();int y= (int)sv.get(i).getDec();
-	    		g2.drawOval(x-ovalSize/2,y-ovalSize/2, ovalSize, ovalSize);
-	    		g2.drawString(x+", "+y, x, y+70);
-	    		}}
+	    	f= new Font (Font.DIALOG,Font.BOLD,ovalSize+50);
 	    	}
-	    	
+			g2.setFont(f);
+			
+			///draw DB
+//	    	for(int i=0; i<sv.size();i++)
+//	    	{
+//	    		if(i>sv_realsize)
+//	    			g2.setColor(Color.YELLOW);
+//	    		else
+//	    			g2.setColor(Color.YELLOW);
+//	    		if(ovalSize<3){
+//	    			int x=(int)sv.get(i).getRa();int y= 90+(int)sv.get(i).getDec();
+//	    		g2.drawOval(x,y, ovalSize, ovalSize);
+//	    		g2.drawString(x+", "+y, x, y+70);
+//	    		}
+//	    		else{
+//	    			if(sv.get(i)!= null){
+//	    			int x=(int)sv.get(i).getRa();int y= (int)sv.get(i).getDec();
+//	    		g2.drawOval(x-ovalSize/2,y-ovalSize/2, ovalSize, ovalSize);
+//	    		g2.drawString(x+", "+y, x, y+70);
+//	    		}}
+//	    	}
+//	    	
 	 		double maxDiff=0;
 	 		double minDiff=5000;
 	    	int x1,x2,x3,y1,y2,y3;
@@ -110,13 +113,18 @@ public class CreateTriangImage {
 	    				minDiff=temp_diff;
 	    			
 	    			
-//	    			System.out.println("s_dbp1 RA"+st.elementAt(i).s_dbp1.get(j).getRA()+" "+x1+" "+y1);
-//	    			System.out.println("s_dbp2 RA"+st.elementAt(i).s_dbp2.get(j).getRA()+" "+x2+" "+y2);
-//	    			System.out.println("s_dbp3 RA"+st.elementAt(i).s_dbp3.get(j).getRA()+" "+x3+" "+y3);
-//	    			g2.drawString(String.valueOf(st.elementAt(i).s_dbp1.elementAt(j).getRA())+","+st.elementAt(i).s_dbp1.elementAt(j).getDEC(), x1,y1-j*100);
-//	    			g2.drawString(String.valueOf(st.elementAt(i).s_dbp2.elementAt(j).getRA())+","+st.elementAt(i).s_dbp2.elementAt(j).getDEC(), x2,y2-j*100);
-//	    			g2.drawString(String.valueOf(st.elementAt(i).s_dbp3.elementAt(j).getRA())+","+st.elementAt(i).s_dbp3.elementAt(j).getDEC(), x3,y3-j*100);
-//	    			
+	    			System.out.println("s_dbp1 RA"+st.elementAt(i).s_dbp1.get(j).getRa()+" "+x1+" "+y1);
+	    			System.out.println("s_dbp2 RA"+st.elementAt(i).s_dbp2.get(j).getRa()+" "+x2+" "+y2);
+	    			System.out.println("s_dbp3 RA"+st.elementAt(i).s_dbp3.get(j).getRa()+" "+x3+" "+y3);
+//	    			g2.drawString(String.valueOf(st.elementAt(i).s_dbp1.elementAt(j).getRa())+","+st.elementAt(i).s_dbp1.elementAt(j).getDec(), x1,y1-j*100);
+//	    			g2.drawString(String.valueOf(st.elementAt(i).s_dbp2.elementAt(j).getRa())+","+st.elementAt(i).s_dbp2.elementAt(j).getDec(), x2,y2-j*100);
+//	    			g2.drawString(String.valueOf(st.elementAt(i).s_dbp3.elementAt(j).getRa())+","+st.elementAt(i).s_dbp3.elementAt(j).getDec(), x3,y3-j*100);
+	    			g2.setColor(Color.pink);
+	    			g2.drawString(String.valueOf(st.elementAt(i).s_dbp1.elementAt(j).getStringName()), x1+50*i,y1);
+	    			g2.drawString(String.valueOf(st.elementAt(i).s_dbp2.elementAt(j).getStringName()), x2+50*i,y2);
+	    			g2.drawString(String.valueOf(st.elementAt(i).s_dbp3.elementAt(j).getStringName()), x3+50*i,y3);
+
+	    			
 //	    			g2.drawString(st.elementAt(i).s_dbp1.elementAt(j).get_name(), x1,y1);
 //	    			g2.drawString(st.elementAt(i).s_dbp2.elementAt(j).get_name(), x2,y2);
 //	    			g2.drawString(st.elementAt(i).s_dbp3.elementAt(j).get_name(), x3,y3);
@@ -146,22 +154,15 @@ public class CreateTriangImage {
 	
 	public static void createImage3(HashMap<Integer,Star> sv, pixelMatch[] pm  ,String fileName ,int ovalSize,int sv_realsize, int size ,double time) throws FileNotFoundException{
 			BufferedImage background;
-			createStarName.fileToMAp();
+			//createStarName.fileToMAp();
 			
 			try {
-				Vector<String> names=createStarName.getTABLE();
-				double confRatio= size/pm.length;
-				
-			//background = ImageIO.read(new File(StaticElements.imageToProcess));
-			//int width =background.getWidth();
-			//int height = background.getHeight();
-			//BufferedImage pixelImage = new BufferedImage(width, height,  BufferedImage.TYPE_INT_ARGB);   
+				//Vector<String> names=createStarName.getTABLE();
+				double confRatio= size/pm.length;	
 				File back=new File(StarFrame.backgroundImage);
 				back.canRead();
 				BufferedImage pixelImage = ImageIO.read(back);
-				//BufferedImage pixelImage = ImageIO.read(new File(StaticElements.imageToProcess));
-//		    pixelImage.setRGB(0, 0, width, height, pixels, 0, width);
-		    File outputfile = new File(fileName+".jpg");
+				File outputfile = new File(fileName+".jpg");
 		    	ovalSize=50;
 		    	Graphics2D g2 = pixelImage.createGraphics();
 		    	g2.setBackground(Color.WHITE);
@@ -174,7 +175,7 @@ public class CreateTriangImage {
 		    		g2.setColor(Color.YELLOW);
 		    		int x=(int)sv.get(i).getRa();int y= (int)sv.get(i).getDec();
 		    		g2.drawOval(x-25,y-25, 50, 50);
-		    	//	g2.drawString(String.valueOf(sv.elementAt(i).getRA())+","+String.valueOf(sv.elementAt(i).getDEC()), x,y);
+		    	    //g2.drawString(String.valueOf(sv.elementAt(i).getRA())+","+String.valueOf(sv.elementAt(i).getDEC()), x,y);
 		    		//g2.drawString(String.valueOf(x)+","+String.valueOf(y), x,y+100);
 		    	}}
 		    	g2.setColor(Color.GREEN);
@@ -184,7 +185,7 @@ public class CreateTriangImage {
 		    	{
 		    		
 		    		if(pm[i]!=null && pm[i].getBestCount()>=0){//&& pa[i].getBestCount()>sv.size()-16){
-		    		if(pm[i].getBestCount()> pm.length/2+1){
+		    		//if(pm[i].getBestCount()> pm.length/2-3){
 		    			double tmpRatio = Math.floor(pm[i].getBestCount()/confRatio * 1000) / 1000;
 		    			System.out.println("tmp"+tmpRatio);
 		    			RA=pm[i].getBestStar().getRa();
@@ -193,23 +194,24 @@ public class CreateTriangImage {
 		    			y1=(int)pm[i].getS().getY();
 		    			g2.setColor(Color.green);
 		    			int index=Integer.valueOf(pm[i].getBestStar().getId());
-		    			int indexI=(int)index-1;
-		    			//g2.drawString(pm[i].getBestStar().getRA()+","+pm[i].getBestStar().getDEC(), x1,y1);
-		    			//g2.drawString(pm[i].getBestStar().get_name(), x1,y1);
+		  //  			int indexI=(int)index-1;
+		    			//g2.drawString(pm[i].getBestStar().getRa()+","+pm[i].getBestStar().getDec(), x1,y1);
+		    			g2.setColor(Color.cyan);
+		    			g2.drawString(pm[i].getBestStar().getStringName(), x1+50,y1);
 		    			
-		    			g2.drawString(names.elementAt(indexI), x1+10,y1+30);
+	//	    			g2.drawString(names.elementAt(indexI), x1+10,y1+30);
 		    			
 		    			g2.setColor(Color.pink);
 		    			
-		    			
+		    			confRatio=0;
 		    		
 		    			if(confRatio!=0)
 		    				g2.drawString(String.valueOf(tmpRatio), x1+50,y1+100);
 		    			else
-		    				g2.drawString(String.valueOf(pm[i].getBestCount()),  x1+10,y1+60);
+		    				g2.drawString(String.valueOf(pm[i].getBestCount()),  x1+60,y1+60);
 		    			
 				    	
-		    		}
+		    	//	}
 		    		 }
 		    	}
 		    	g2.setColor(Color.pink);
