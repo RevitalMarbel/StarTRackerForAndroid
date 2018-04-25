@@ -136,7 +136,7 @@ public class CreateHashTableFromTXT {
 						int intkey2D=Integer.valueOf(AccuracyLevel.RoundToRange(key2D));
 						String value2D= starVector.get(i).getName().concat("_").concat(starVector.get(j).getName());
 						put2DKey(intkey2D, value2D);
-						System.out.println("key 2D : "+intkey2D +" val2D: "+value2D);
+						//System.out.println("key 2D : "+intkey2D +" val2D: "+value2D);
 								}
 						}
 			}
@@ -296,7 +296,7 @@ public class CreateHashTableFromTXT {
 
 		String[] res= {k1,k2,k3,k4,k5,k6,k7,k8,k9,k10,k11,k12,k13,k14,k15,k16,k17,k18,k19,k20};
 		
-		System.out.println(k1+ " "+k3+" "+k12);
+		//System.out.println(k1+ " "+k3+" "+k12);
 		return res;
 		
 	}

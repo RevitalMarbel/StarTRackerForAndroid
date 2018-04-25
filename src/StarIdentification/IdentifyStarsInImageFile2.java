@@ -17,6 +17,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.text.StyleContext.SmallAttributeSet;
 
 import RaDecCalc.RaDecToAng;
+import StaticElements.HashTableFile;
 import StaticElements.StarFrame;
 import loadDB.AccuracyLevel;
 import loadDB.LoadHashTable;
@@ -98,6 +99,10 @@ public class IdentifyStarsInImageFile2 {
 						for (int j=i+1; j<starVectorFrame.size(); j++) {
 						for(int t=j+1;t<starVectorFrame.size();t++)
 					{  
+					if(AccuracyLevel.dist(starVectorFrame.get(i),starVectorFrame.get(j)) > HashTableFile.minAngdist
+					&& AccuracyLevel.dist(starVectorFrame.get(i),starVectorFrame.get(t)) > HashTableFile.minAngdist
+					&&AccuracyLevel.dist(starVectorFrame.get(t),starVectorFrame.get(j)) > HashTableFile.minAngdist   )
+					{
 					String[] keyVal=AccuracyLevel.createTkeyVal(starVectorFrame.get(i),starVectorFrame.get(j),starVectorFrame.get(t));
 					String key=keyVal[0];
 					String val[]=keyVal[1].split("_");
@@ -131,7 +136,7 @@ public class IdentifyStarsInImageFile2 {
 						}
 						matchVector.add(tempMatch);
 				}			
-		}}}
+		}}}}
 		 
 		//filter out matches with far angles if tracking mode.
 		//if(StaticElements.istrackMode){
